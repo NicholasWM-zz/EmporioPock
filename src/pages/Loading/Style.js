@@ -1,6 +1,8 @@
 import {
     StyleSheet,
 } from 'react-native';
+
+import colours from '../../components/patterns/ColourPallet'
 export default StyleSheet.create({
     container: {
         flex: 1,
@@ -8,7 +10,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '100%',
-        backgroundColor: "#1E140F",
+        backgroundColor: colours.darkGoldenRod,
     },
     logo: {
         alignSelf:'center',

@@ -8,7 +8,7 @@ import {
 
 import styles from './Style'
 
-const add_icon = require('../../assets/add.png')
+const add_icon = require('../../assets/icons/plus/plus_1.png')
 
 export default function SelectItems(props){
     const { name, setter } = props
