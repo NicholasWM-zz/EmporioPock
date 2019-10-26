@@ -9,8 +9,6 @@ import {
     TouchableOpacity,
     ScrollView, 
     SafeAreaView,
-    View,
-    Modal,
 } from 'react-native';
 
 import {bebidas, carnes} from '../../../database/bd'
@@ -18,6 +16,7 @@ import {bebidas, carnes} from '../../../database/bd'
 import ScrollHorizontal from '../../components/ScrollHorizontal/index'
 import SelectItems from '../../components/SelectItems/index'
 import ModalSelecaoItems from '../../components/ModalSelecaoItems/index'
+import ModalCalculo from '../../components/ModalCalculo/index'
 
 import styles from './Style'
 const logo = require('../../assets/Logo_3.png')
@@ -29,6 +28,10 @@ export default function Loading() {
     const [carnesModal, setCarnesModal] = useState(false)
     const [carnesSelecionadas, setCarnesSelecionadas] = useState([])
     
+    const [calculoModal, setCalculoModal] = useState(false)
+
+    const [numCriancas, setNumeroCriancas] = useState(0)
+    const [numAdultos, setNumeroAdultos] = useState(0)
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
@@ -37,10 +40,12 @@ export default function Loading() {
                 <TextInput
                     style={styles.input}
                     placeholder="Quantidade de Adultos"
+                    onChangeText={(num) => setNumeroAdultos(num)}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Quantidade de Crianças"
+                    onChangeText={(num) => setNumeroCriancas(num)}
                 />
 
                 <SelectItems
@@ -64,7 +69,10 @@ export default function Loading() {
                 ></ScrollHorizontal>
 
 
-                <TouchableOpacity style={styles.button} >
+                <TouchableOpacity 
+                    style={styles.button}
+                    onPress={()=>setCalculoModal(true)}
+                     >
                     <Text style={styles.buttonText}>Calcular</Text>
                 </TouchableOpacity>
 
@@ -88,6 +96,13 @@ export default function Loading() {
                 listaItemsDisponiveis={carnes}
                 stringPreco="reais p/kg">
             </ModalSelecaoItems>
+
+            <ModalCalculo
+                itemsSelecionados={{ bebidasSelecionadas, carnesSelecionadas }}
+                dados={{numCriancas, numAdultos}}
+                visibleModal={calculoModal}
+                setterModal={setCalculoModal}
+            ></ModalCalculo>
         </SafeAreaView>
     )
 }
