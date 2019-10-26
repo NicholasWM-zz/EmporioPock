@@ -70,7 +70,7 @@ export default function ModalSelecaoItems(props) {
                     onPress={() => {
                         setterModal(!visibleModal);
                     }}>
-                    <Text style={styles.buttonText}>Hide Modal</Text>
+                    <Text style={styles.buttonText}>Concluir</Text>
                 </TouchableOpacity>
             </ScrollView>
         </Modal>
