@@ -25,6 +25,7 @@ export default function ModalSelecaoItems(props) {
     const [carnes, setCarnes] = useState(carnesSelecionadas)
 
     const [bebidasCalculo, setBebidasCalculo] = useState([])
+    const [carnesCalculo, setCarnesCalculo] = useState([])
 
     const [precoTotal, setPrecoTotal] = useState(0)
 
@@ -42,6 +43,20 @@ export default function ModalSelecaoItems(props) {
 
             return bebidaSelecionada
         }))}, [bebidasSelecionadas])
+    useEffect(() => 
+        {
+        console.log("Selecionadas >>>",bebidasSelecionadas, '\n\n\n');
+        console.log("CarnesCalculo >>>",carnesCalculo, '\n\n\n');
+        // console.log("Carnes >>>",carnes, '\n\n\n');
+            
+            setCarnesCalculo(carnesSelecionadas.map(carneSelecionada => {
+    
+            carneSelecionada.quantidade = 0
+            carneSelecionada.precoTotal = 0
+            carneSelecionada.totalKgs = 0
+
+            return carneSelecionada
+        }))}, [carnesSelecionadas])
 
     
     return (
@@ -107,13 +122,59 @@ export default function ModalSelecaoItems(props) {
                         </View>
                     ))
                     : <Text>Você não selecionou nenhuma bebida</Text>}
+                {carnesCalculo.length ? carnesCalculo.map((item, index, array)=>(
+                    <View key={item.id} style={{ flex: 3, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin:15}}>
+                        <Image source={item.img} style={styles.img}></Image>
+                        <View style={{}}>
+                                <Text>{item.preco} {`${item.string_preco}`}</Text>
+                                <Text>Total: {`${item.precoTotal}`} reais</Text>
+                                <Text>{`${item.quantidade}`} unidades</Text>
+                            </View>
+                            <View style={{flexDirection:'column', justifyContent:'space-between'}}>
+                                <TouchableOpacity style={{margin:7}}
+                                    onPress={()=> {
+                                            setCarnesCalculo(array.map((element, ind, a)=> {
+                                                if(ind == index){
+                                                    element.quantidade += 1
+                                                    element.precoTotal = element.quantidade * element.preco
+                                                    element.totalKgs = (element.quantidade * element.litro_ml)/1000
+                                                }
+                                                return element
+                                        
+                                            }))
+                                            setPrecoTotal(carnesCalculo.reduce((anterior, atual) => anterior + atual.precoTotal,0))
+                                        }
+                                            
+                                    }>
+                                    <Image style={{height:30, width:30}} source={plus}></Image>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{margin:7}}
+                                    onPress={() => {
+                                        setCarnesCalculo(array.map((element, ind, a) => {
+                                                if (ind == index) {
+                                                    element.quantidade = element.quantidade >= 1 ? element.quantidade -= 1 : element.quantidade
+                                                    element.precoTotal = element.quantidade * element.preco
+                                                    element.totalKgs = (element.quantidade * element.litro_ml) / 1000
+                                                }
+                                                return element
+                                    }))
+                                            setPrecoTotal(carnesCalculo.reduce((anterior, atual) => anterior + atual.precoTotal, 0))}
+                                    }>
+                                    <Image style={{height:30, width:30}} source={minus}></Image>
+                                </TouchableOpacity>
+
+                            </View>
+
+                        </View>
+                    ))
+                    : <Text>Você não selecionou nenhuma bebida</Text>}
                     <Text>Preço Total: {precoTotal} reais</Text>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
                         setterModal(!visibleModal);
                     }}>
-                    <Text style={styles.buttonText}>Hide Modal</Text>
+                    <Text style={styles.buttonText}>Concluir</Text>
                 </TouchableOpacity>
             </ScrollView>
         </Modal>
