@@ -13,6 +13,7 @@ import minus from '../../../assets/icons/minus/minus_3.png'
 export default function RenderItemCalculo(props) {
 
 return (
+    
     <>
     {props.calculo.length ? props.calculo.map((item, index, array) => (
             <View key={item.id} style={{ flex: 3, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 15 }}>
