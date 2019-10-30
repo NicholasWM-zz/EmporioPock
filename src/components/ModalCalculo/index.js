@@ -9,7 +9,7 @@ import {
 import styles from './Style'
 import RenderItemCalculo from './RenderItemCalculo/index'
 
-export default function ModalSelecaoItems(props) {
+export default function ModalCalculo(props) {
     const { visibleModal, setterModal } = props
     const {numAdultos, numCriancas} = props.dados
     const { bebidasSelecionadas, carnesSelecionadas } = props.itemsSelecionados
@@ -23,7 +23,11 @@ export default function ModalSelecaoItems(props) {
     const [bebidasCalculo, setBebidasCalculo] = useState([])
     const [carnesCalculo, setCarnesCalculo] = useState([])
 
+    const [precoTotalCarnes, setPrecoTotalCarnes] = useState(0)
+    const [precoTotalBedidas, setPrecoTotalBedidas] = useState(0)
     const [precoTotal, setPrecoTotal] = useState(0)
+
+    useEffect(() => { setPrecoTotal(precoTotalCarnes + precoTotalBedidas)}, [precoTotalCarnes,precoTotalBedidas])
 
     useEffect(() => 
         {
@@ -48,13 +52,15 @@ export default function ModalSelecaoItems(props) {
     
     return (
         <Modal
+            style={{flex:1}}
             animationType='fade'
             transparent={false}
             visible={visibleModal}
             onRequestClose={() => {
                 setterModal(false)
             }}>
-            <ScrollView>
+            <ScrollView 
+            style={{flex:0.8}}>
                 <View
                     style={styles.dadosCalculados}>
                     <Text>Total Carne: {calculadoraQuantidade(carnePorAdulto, carnePorCrianca)}kg</Text>
@@ -62,9 +68,10 @@ export default function ModalSelecaoItems(props) {
                     <Text>Calculo feito para {`${numAdultos}`} adultos e {`${numCriancas}`} crianças</Text>
                 </View>
                 <RenderItemCalculo
+                    title="Bebidas"
                     calculo={bebidasCalculo}
                     setCalculo={setBebidasCalculo}
-                    setPrecoTotal={setPrecoTotal} 
+                    setPrecoTotal={setPrecoTotalBedidas} 
                     desc={(item) => {
                         return [
                         `${item.quantidade} unidades`,
@@ -74,11 +81,26 @@ export default function ModalSelecaoItems(props) {
                         `Total: ${item.precoTotal} reais`
                         ]
                     }}
+                    new_props={
+                        {
+                            'plus':[
+                                {'key': 'quantidade', 'value': (element)=> element.quantidade += 1},
+                                { 'key': 'precoTotal', 'value': (element) => element.quantidade * element.preco},
+                                { 'key': 'totalLitros', 'value': (element) => element.litro_ml != undefined ? (element.quantidade * element.litro_ml) / 1000 : undefined},
+                            ],
+                            'minus':[
+                                { 'key': 'quantidade', 'value': (element) => element.quantidade > 0 ? element.quantidade -= 1: 0},
+                                { 'key': 'precoTotal', 'value': (element) => element.quantidade * element.preco},
+                                { 'key': 'totalLitros', 'value': (element) => element.litro_ml != undefined ? (element.quantidade * element.litro_ml) / 1000 : undefined},
+                            ]
+                        }
+                    }
                 />
                 <RenderItemCalculo
+                    title="Carnes"
                     calculo={carnesCalculo}
                     setCalculo={setCarnesCalculo}
-                    setPrecoTotal={setPrecoTotal} 
+                    setPrecoTotal={setPrecoTotalCarnes} 
                     desc={(item) => {
                         return [
                         `${item.quantidade} Kgs`,
@@ -86,16 +108,31 @@ export default function ModalSelecaoItems(props) {
                         `Total: ${item.precoTotal.toFixed(2) } reais`,
                         ]
                     }}
+                    new_props={
+                        {
+                            'plus': [
+                                { 'key': 'quantidade', 'value': (element) => element.quantidade += 1 },
+                                { 'key': 'precoTotal', 'value': (element) => element.quantidade * element.preco },
+                            ],
+                            'minus': [
+                                { 'key': 'quantidade', 'value': (element) => element.quantidade > 0 ? element.quantidade -= 1 : 0 },
+                                { 'key': 'precoTotal', 'value': (element) => element.quantidade * element.preco },
+                            ]
+                        }
+                    }
                 />
-                <Text>Preço Total: {precoTotal.toFixed(2)} reais</Text>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                        setterModal(!visibleModal);
-                    }}>
-                    <Text style={styles.buttonText}>Concluir</Text>
-                </TouchableOpacity>
             </ScrollView>
+            <View style={{ flex: 0.2 }}> 
+
+                    <Text>Preço Total: {precoTotal.toFixed(2)} reais</Text>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                            setterModal(!visibleModal);
+                        }}>
+                        <Text style={styles.buttonText}>Concluir</Text>
+                    </TouchableOpacity>
+                </View>
         </Modal>
     )
 }
