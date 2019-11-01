@@ -25,7 +25,7 @@ export default function ScrollHorizontal(props) {
                         ))}
                     </ScrollView>
                     <Text style={styles.textRemoverItem}>Clique para remover</Text>
-                </SafeAreaView> : <Text style={styles.textRemoverItem}>Nenhum Item Selecionado!</Text>}
+                </SafeAreaView> : <Text style={styles.textSelecaoVazia}>Nenhum Item Selecionado!</Text>}
         </>
     )
 }

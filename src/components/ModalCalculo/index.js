@@ -13,7 +13,8 @@ export default function ModalCalculo(props) {
     const { visibleModal, setterModal } = props
     const {numAdultos, numCriancas} = props.dados
     const { bebidasSelecionadas, carnesSelecionadas } = props.itemsSelecionados
-    const [carnePorAdulto, carnePorCrianca, bebidaPorAdulto, bebidaPorCrianca] = [0.623,0.444,1,0.500]
+    // const [carnePorAdulto, carnePorCrianca, bebidaPorAdulto, bebidaPorCrianca] = [0.623,0.444,1,0.500]
+    const [carnePorAdulto, carnePorCrianca, bebidaPorAdulto, bebidaPorCrianca] = [0.400,0.200,1,0.500]
     
     const calculadoraQuantidade = (consumoPorAdulto, consumoPorCrianca) => Math.round((numAdultos * consumoPorAdulto) + (numCriancas * consumoPorCrianca))
     const calculadoraPreco = (quantidade , preco)=> quantidade * preco
@@ -22,6 +23,7 @@ export default function ModalCalculo(props) {
 
     const [bebidasCalculo, setBebidasCalculo] = useState([])
     const [carnesCalculo, setCarnesCalculo] = useState([])
+    
 
     const [precoTotalCarnes, setPrecoTotalCarnes] = useState(0)
     const [precoTotalBedidas, setPrecoTotalBedidas] = useState(0)

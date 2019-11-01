@@ -6,22 +6,20 @@ export default StyleSheet.create({
     selectModal: {
         borderWidth: 1,
         borderColor: "red",
-        flex: 2,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+        // flex: 2,
+        flexDirection: 'column',
         justifyContent: 'space-between',
         textAlignVertical: 'center',
         marginLeft: 35,
         marginRight: 35,
         marginTop: 25,
         alignItems: 'center',
-        paddingLeft: 5,
-        paddingRight: 12,
+        textAlign: 'center',
     },
     selectModalSelecionado: {
         borderWidth: 1,
         borderColor: "red",
-        flex: 2,
+        // flex: 2,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
@@ -35,13 +33,17 @@ export default StyleSheet.create({
         paddingRight: 12,
     },
     modalImg: {
-        height: 150,
-        width: 150,
+        borderWidth: 1,
+        borderColor: "red",
+        height: 300,
+        width: 300,
         borderRadius: 20,
         margin: 2,
     },
     modalItemDesc: {
-        textAlign: 'justify',
+        borderWidth: 1,
+        borderColor: "red",
+        textAlign: 'center',
         width: 110,
     },
     button: {
@@ -58,5 +60,10 @@ export default StyleSheet.create({
     buttonText: {
         color: 'white',
     },  
-
+    lista_items:{
+        flex:0.8
+    },
+    items_selecionados_horizontal:{
+        flex: 0.4
+    }
 })
